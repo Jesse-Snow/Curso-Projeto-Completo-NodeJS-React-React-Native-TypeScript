@@ -2,20 +2,17 @@ import Nome from './components/Nome.js'
 import {useState} from 'react'
 
 function App() {
-  const [nome,setNome] = useState('');
-  const [idade,setIdade] = useState('');
-  const [email,setEmail] = useState('');
-  const [user,setUser] = useState({});
+  const [input,setInput] = useState('');
+  const [tarefa,setTarefa] = useState([
+    'Comer brocolis',
+    'Assar Cenoura'
+  ]);
 
   function handleSubmit(event){
     event.preventDefault();
 
-    setUser({
-      name:nome,
-      age:idade,
-      email:email
-    });
-    alert('Usuário Cadastrado');
+    setTarefa([...tarefa,input]);
+    setInput('');
   }
 
   return (
@@ -23,22 +20,20 @@ function App() {
       <h1>Cadastro de usuário</h1>
 
       <form onSubmit={handleSubmit}>
-        <label>Nome:</label><br/>
-        <input value = {nome} onChange={(e) => setNome(e.target.value)} placeholder='Digite seu nome'></input><br/>
-
-        <label>Idade:</label><br/>
-        <input input value = {idade} onChange={(e) => setIdade(e.target.value)} placeholder='Digite sua idade'></input><br/>
-
-        <label>Email:</label><br/>
-        <input input value = {email} onChange={(e) => setEmail(e.target.value)} placeholder='Digite seu Email'></input><br/>
-
+        <label>Nome da Tarefa:</label><br/>
+        <input value = {input} onChange={(e) => setInput(e.target.value)} placeholder='Digite a tarefa'></input><br/>
+        
         <input type='submit' value='Enviar'></input>
       </form>
 
+
       <div>
-        <span>Bem vindo {user.name}</span><br/>
-        <span>Idade: {user.age}</span><br/>
-        <span>Email: {user.email}</span><br/>
+        <ul>
+          {tarefa.map( algumaTarefa => (
+            <li key={algumaTarefa}>{algumaTarefa}</li>
+          ))}
+        </ul>
+
       </div>
      </div>
   );

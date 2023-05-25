@@ -68,3 +68,13 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### Section 4
+#### Lesson 31
+
+Criar To Do:
+- Criar hook para tarefa
+- Criar hook para input
+- Criar função handle submit para quando clicar, adicionar as tarefa o input ( note que só vai funcionar com uma tarefa )
+- Criar lista no componente App mapeando todas as tarefas e retornando uma lista
+  - Lembre de usar o atributo key
