@@ -1,14 +1,34 @@
 import Nome from './components/Nome.js'
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 
 // Componente App
 function App() {
   // [nomeDoHook,acessorDoHook] = useState(valorPadrão/tipoDoHook);
   const [input,setInput] = useState('');
   const [tarefa,setTarefa] = useState([
-    'Comer brocolis',
-    'Assar Cenoura'
+  //  valores padrões:
+  //  'Assar Cenoura'
   ]);
+
+  // Se array vazio(Segundo parâmetro) - chama ao montar componente ( component mount)
+  useEffect(()=>{
+    const tarefasStorage = localStorage.getItem('@tarefas');
+
+    if(tarefasStorage){
+      setTarefa(JSON.parse(tarefasStorage));
+    }
+    
+  },[]);
+
+  // Se array preenchido(Segundo ou mais parâmetros) - chama se o que for preenchido sofrer alteração
+  useEffect(() => {
+    if(tarefa.length !==0 ){
+      localStorage.setItem('@tarefas',JSON.stringify(tarefa));
+    }
+  },[tarefa]);
+
+  // Se o useEffect tive um return ()=>{} isso será chamado ao desmontar ( component unmount)
+  
 
   function handleSubmit(event){
     // Previnir do evento do form limpar o form
