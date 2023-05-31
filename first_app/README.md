@@ -72,9 +72,21 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### Section 4
 #### Lesson 31
 
+- O que seria um hook?
+Uma espécie de variável e para modificala se usa o setVariavel.
+
 Criar To Do:
 - Criar hook para tarefa
 - Criar hook para input
 - Criar função handle submit para quando clicar, adicionar as tarefa o input ( note que só vai funcionar com uma tarefa )
 - Criar lista no componente App mapeando todas as tarefas e retornando uma lista
   - Lembre de usar o atributo key
+
+
+## Section 4
+##### Lession 32
+
+- O que seria o useEffect?
+Ai onde entra a questão de Ciclo de Vida do React, onde
+o useEffect com uma callback sem o segundo parâmetro, irá retornar quando montar o componente,
+Se o segundo parâmetro estiver dentro do array, então irá chamar o useEffect também

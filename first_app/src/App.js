@@ -14,6 +14,7 @@ function App() {
     // Previnir do evento do form limpar o form
     event.preventDefault();
 
+    // Spread operator para distribuir todas as tarefas dentro do array mais a do input
     setTarefa([...tarefa,input]);
     setInput('');
   }
