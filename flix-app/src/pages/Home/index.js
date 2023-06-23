@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 function Home(){
     const [filme,setFilme] = useState([]);
+    const [loading,setLoading] = useState(true);
 
     useEffect(()=>{
 
@@ -19,12 +20,21 @@ function Home(){
             })
             //console.log(response.data.results.slice(0,10));               
             setFilme(response.data.results.slice(0,10));
+            setLoading(false);
         }
 
         loadFilmes();
         
     },[])
 
+
+    if(loading){
+        return (
+            <div className='loading'>
+                Carregando...
+            </div>
+        )
+    }
     
     return (
         <div className='container'>
