@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
 import apiKey from '../../services/key.json';
 import api from "../../services/api";
+import './style.css';
 
 function DetalheFilme(){
     const { id } = useParams();
@@ -45,8 +46,16 @@ function DetalheFilme(){
 
             <h3>Sinopse</h3>
             <span>{filme.overview}</span><br/>
-
             <strong>Avaliação {filme.vote_average} / 10</strong>
+
+            <div className="area-buttons">
+                <button>Salvar</button>
+                <button>
+                    <a href="#">
+                        Trailer
+                    </a>
+                </button>
+            </div>
         </div>
     )
 }
