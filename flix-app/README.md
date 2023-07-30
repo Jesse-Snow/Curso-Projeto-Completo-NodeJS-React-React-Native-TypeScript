@@ -74,5 +74,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 # Notes 
  - [] Movie detail
-   - Uses a component that when it whas mounted, fetchs the data from the API 
+   - [x] Uses a component that when it whas mounted, fetchs the data from the API 
    and render the Elements, like image and description of the movie.
+   - [] Using React Navigate to go in the error page if the movie was not found.
+     - Add id ( from useParams ) and navigate ( from use Navigate ) in the second parameter of useEffect, this avoid taking conflict if something loads outside the scope of useEffect. This second parameter in the array, if is changed, it calls the first paramenter of useEffect function. 
+   - [] Make the buttons functonal
