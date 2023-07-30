@@ -1,6 +1,7 @@
 
 import { useEffect,useState } from "react";
 import { useParams,useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import apiKey from '../../services/key.json';
 import api from "../../services/api";
 import './style.css';
@@ -50,13 +51,13 @@ function DetalheFilme(){
         const hasFilme = filmesSalvos.some( filmeQueFoiSalvo => filmeQueFoiSalvo.id === filme.id);
 
         if(hasFilme){
-            alert(`O Filme '${filme.title}' já está salvo!`);
+            toast.warn(`O Filme '${filme.title}' já está salvo!`);
             return;
         }
 
         filmesSalvos.push(filme)
         localStorage.setItem('@primeFlix', JSON.stringify(filmesSalvos));
-        alert('Filme salvo com sucesso!')
+        toast.success('Filme salvo com sucesso!');
     }
 
     if(loading) {

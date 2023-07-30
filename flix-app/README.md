@@ -81,4 +81,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
    - [x] Make the buttons functonal
      - Createad function to set the Movies on the local storage.
      - Setted a link to the href to search the trailer of the movie     on the youtube
-  - [] Create the pages of Meus Filmes
+  - [x] Create the pages of Meus Filmes
