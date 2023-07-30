@@ -36,6 +36,24 @@ function DetalheFilme(){
         return () => { console.log('Componente desmontado')}
     },[id,navigate])
 
+    function salvarFilme(){
+        const minhaLista = localStorage.getItem('@primeFlix');
+
+        let filmesSalvos = JSON.parse(minhaLista) || [];
+
+        // Verifica se algum filme do array do localstorage tem o id igual ao do hook filme( preenchido pela Api )
+        const hasFilme = filmesSalvos.some( filmeQueFoiSalvo => filmeQueFoiSalvo.id === filme.id);
+
+        if(hasFilme){
+            alert(`O Filme '${filme.title}' já está salvo!`);
+            return;
+        }
+
+        filmesSalvos.push(filme)
+        localStorage.setItem('@primeFlix', JSON.stringify(filmesSalvos));
+        alert('Filme salvo com sucesso!')
+    }
+
     if(loading) {
         return (
             <div className="filme-info">
@@ -55,7 +73,7 @@ function DetalheFilme(){
             <strong>Avaliação {filme.vote_average} / 10</strong>
 
             <div className="area-buttons">
-                <button>Salvar</button>
+                <button onClick={salvarFilme}>Salvar</button>
                 <button>
                     <a target="blank" rel="external" href={`https://www.youtube.com/results?search_query=${filme.title} Trailer`}>
                         Trailer
