@@ -34,7 +34,12 @@ function DetalheFilme(){
         loadFilme();
 
         return () => { console.log('Componente desmontado')}
-    },[id,navigate])
+    },
+    /* 
+       Segundo parâmetro -> Adicionado array de dependências, pois irá incluir o 
+       id e o navigate que está fora do escopo do useState 
+    */ 
+    [id,navigate])
 
     function salvarFilme(){
         const minhaLista = localStorage.getItem('@primeFlix');
