@@ -1,5 +1,5 @@
 import {BrowserRouter,Routes, Route} from 'react-router-dom';
-import Home from './pages/Home'; // Se usar index, não precisa colocar aqui
+import Home from './pages/Home'; // Se usar index, não precisa colocar aqui o nome do arquivo
 import Sobre from './pages/Sobre';
 import Contato from './pages/Contato';
 import Header from './components/Header';
