@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Models
+
+model User {
+  id String @id @default(uuid())
+  name String 
+  email String
+  password String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("users")
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  // Informa que uma categoria pode ter vários Produtos
+  product Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id String @id @default(uuid())
+  name String
+  price String 
+  description String
+  // A imagem do produto
+  banner String
+
+  // Cria uma FK, informando que a coluna 'category_id' desta tabela, irá fazer 
+  // referencia ao campo 'id' da tabela Category
+  category Category @relation(fields: [category_id],references: [id])
+  category_id String
+  
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  orderItem Order_Item[]
+  
+  @@map("products")
+}
+
+model Order {
+  id String @id @default(uuid())
+  table Int
+  // Se o pedido não foi finalizado. Logo ao abrir o pedido, será false
+  status Boolean @default(false)
+  // Será um rascunho (draft = true ) enquanto o pedido não for finalizado 
+  // para que não mostre o pedido que não foi finalizado na cozinha
+  draft Boolean @default(true)
+  // Opcionalmente, além do número da mesa, pode saber o nome do cliente deste pedido
+  name String?
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  orderItem Order_Item[]
+
+  @@map("orders")
+}
+
+model Order_Item {
+  id String @id @default(uuid())
+  amount Int 
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  product Product @relation(fields: [product_id],references: [id])
+  product_id String 
+
+  order Order @relation(fields: [order_id],references: [id])
+  order_id String
+
+  @@map("order_itens")
+}
