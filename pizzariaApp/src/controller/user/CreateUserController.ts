@@ -16,6 +16,5 @@ class CreateUserController {
     }
 }
 
-// Essa sintax de { CreateUserController }, é o mesmo que: export {CreateUserController as CreateUserController};
-// O 'as', seria um alias
+// Info - 2
 export { CreateUserController };

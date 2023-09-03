@@ -1,5 +1,6 @@
 // Com o export default, o nome que eu importar aqui pode ser qualquer um, pois o default será o que exportei no prisma/index.ts
 import prismaClient from "../../prisma";
+import { hash } from "bcryptjs";
 
 interface UserRequest {
     name: string;
@@ -29,12 +30,15 @@ class CreateUserService {
         
 
         // Criar usuário
+        
+        // -- Criptografar senha
+        const passwordHash = await hash(password,8);
         const user = await prismaClient.user.create({
             // data é o que irá definir
             data:{
                 name: name,
                 email: email,
-                password: password
+                password: passwordHash
             },
             // O select é o que vai retornar
             select:{
