@@ -1,12 +1,20 @@
 import prismaClient from "../../prisma";
 
 class DetailUserService {
-    async execute(){
+    async execute( userId : string){
 
+        const user = prismaClient.user.findFirst( { 
+            where: {
+                id: userId
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true
+            }
+        })
 
-
-
-        return { ok:'true' }
+        return user;
     }
 }
 
