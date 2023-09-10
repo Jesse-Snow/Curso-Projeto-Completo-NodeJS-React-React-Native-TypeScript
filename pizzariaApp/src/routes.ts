@@ -14,6 +14,7 @@ import { CreateCategoryController } from './controller/category/CreateCategoryCo
 import { ListCategoryController } from './controller/category/ListCategoryController';
 import { CreateProductController } from './controller/product/CreateProductController';
 import { ListByCategoryController } from './controller/product/ListByCategoryController';
+import { CreateOrderController } from './controller/order/CreateOrderController';
 
 const router = Router();
 const upload = multer(uploadConfig.upload('./tmp'));
@@ -34,5 +35,8 @@ router.get('/category', isAuthenticated, new ListCategoryController().handle)
 // Middlewaer upload.single('CampoDaRequisição')
 router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle);
 router.get('/category/product', isAuthenticated, new ListByCategoryController().handle);
+
+// Order Routes
+router.post('/order', isAuthenticated, new CreateOrderController().handle);
 
 export { router }; 
