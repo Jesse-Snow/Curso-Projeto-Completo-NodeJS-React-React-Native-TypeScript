@@ -11,6 +11,7 @@ interface ProductRequest {
 class CreateProductService {
     async execute({ name,price,description,banner,category_id} : ProductRequest){
 
+        
         //const product = await prismaClient.product.create({
         //    select:{
         //        name:true,

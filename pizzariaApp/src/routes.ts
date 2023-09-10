@@ -1,5 +1,10 @@
 import {Router } from 'express';
+
+
+// Middlewares
 import isAuthenticated from './middlewares/isAuthenticated';
+import multer from 'multer';
+import uploadConfig from './config/multer'
 
 // Info - 2 ( Named Export)
 import { CreateUserController } from './controller/user/CreateUserController';
@@ -10,6 +15,7 @@ import { ListCategoryController } from './controller/category/ListCategoryContro
 import { CreateProductController } from './controller/product/CreateProductController';
 
 const router = Router();
+const upload = multer(uploadConfig.upload('./tmp'));
 
 // User Routes
 router.post('/users', new CreateUserController().handle);
@@ -23,7 +29,9 @@ router.post('/category',isAuthenticated , new CreateCategoryController().handle)
 router.get('/category', isAuthenticated, new ListCategoryController().handle)
 
 // Product Routes
-router.post('/product', isAuthenticated, new CreateProductController().handle);
+
+// upload.single('CampoDaRequisição')
+router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle);
 
 
 export { router }; 
