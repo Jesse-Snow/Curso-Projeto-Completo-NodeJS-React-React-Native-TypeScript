@@ -12,25 +12,24 @@ class CreateProductService {
     async execute({ name,price,description,banner,category_id} : ProductRequest){
 
         
-        //const product = await prismaClient.product.create({
-        //    select:{
-        //        name:true,
-        //        price:true,
-        //        description:true,
-        //        banner:true,
-        //        category_id: true
-        //    },
-        //    data:{ 
-        //        name: name,
-        //        price: price,
-        //        description: description,
-        //        banner: banner,
-        //        category_id: category_id
-        //    }
-        //});
-//
-        //return product;
-        return { ok:true}
+        const product = await prismaClient.product.create({
+            select:{
+                name:true,
+                price:true,
+                description:true,
+                banner:true,
+                category_id: true
+            },
+            data:{ 
+                name: name,
+                price: price,
+                description: description,
+                banner: banner,
+                category_id: category_id
+            }
+        });
+        
+        return product;
 
     }
 }
