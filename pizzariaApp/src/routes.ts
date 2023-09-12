@@ -20,6 +20,7 @@ import { AddOrderItemController } from './controller/order/orderItem/AddOrderIte
 import { DeleteOrderItemController } from './controller/order/orderItem/DeleteOrderItemController';
 import { SendOrderController } from './controller/order/SendOrderController';
 import { ListOrdersController } from './controller/order/ListOrdersController';
+import { DetailOrderController } from './controller/order/DetailOrderController';
 
 const router = Router();
 const upload = multer(uploadConfig.upload('./tmp'));
@@ -49,5 +50,6 @@ router.post('/order/add', isAuthenticated, new AddOrderItemController().handle);
 router.delete('/order/remove', isAuthenticated, new DeleteOrderItemController().handle)
 router.put('/order/send', isAuthenticated, new SendOrderController().handle);
 router.get('/orders',isAuthenticated, new ListOrdersController().handle);
+router.get('/order/detail', isAuthenticated, new DetailOrderController().handle);
 
 export { router }; 
