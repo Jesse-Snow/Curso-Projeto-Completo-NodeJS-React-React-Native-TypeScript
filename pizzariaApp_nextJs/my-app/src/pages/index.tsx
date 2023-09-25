@@ -18,28 +18,30 @@ export default function Home() {
         <title>Sujeito Pizza - Faça seu Login</title>
       </Head>
       <div className={styles.containerCenter}>
-        <form>    
-          <Image src={logo} alt="Logo Sujeito Pizza"/>
-          <div className={styles.login}>
-            <Input 
-              type="text"
-              placeholder="Digite seu e-mail"
-            />
+            <Image src={logo} alt="Logo Sujeito Pizza"/>
+        <div className={styles.login}>
+          <form>    
+              <Input 
+                type="text"
+                placeholder="Digite seu e-mail"
+              />
 
-            <Input 
-              type="password"
-              placeholder="Digite sua senha"
-            />
+              <Input 
+                type="password"
+                placeholder="Digite sua senha"
+              />
 
-            <Button 
-              type="submit"
-              loading={true}
-            >
-              Acessar
-            </Button>
+              <Button 
+                type="submit"
+                loading={false}
+              >
+                Acessar
+              </Button>
 
-          </div>
-        </form>
+              <a className={styles.text}>Não possui uma conta? Cadastre-se</a>
+
+          </form>
+        </div>
       </div>
       </>
   )
