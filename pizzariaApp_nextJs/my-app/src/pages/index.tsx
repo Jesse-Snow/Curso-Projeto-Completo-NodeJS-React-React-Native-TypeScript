@@ -7,10 +7,11 @@ import styles from '../styles/home.module.scss';
 
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button"
+import Link from 'next/link';
 import { useState } from "react";
 
 export default function Home() {
-  const [loading,setLoading] = useState();
+  const [loading,setLoading] = useState(false);
 
   return (
       <> {/* Fragment: Tag sem nome e sem estilização */}
@@ -33,12 +34,14 @@ export default function Home() {
 
               <Button 
                 type="submit"
-                loading={false}
+                disabled={loading}
               >
                 Acessar
               </Button>
 
-              <a className={styles.text}>Não possui uma conta? Cadastre-se</a>
+              <Link className={styles.text} href="/sign-up">
+                    Não possui uma conta? Cadastre-se
+              </Link>
 
           </form>
         </div>

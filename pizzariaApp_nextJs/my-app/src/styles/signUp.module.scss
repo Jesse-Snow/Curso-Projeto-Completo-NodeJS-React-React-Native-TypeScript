@@ -1,47 +1,50 @@
-.containerCenter { 
+.containerCenter {  
     min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
     background-color: var(--gray-900);
+    
 }
 
-.login {
+.signUp {
     margin-top: 2rem;
     width: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding:2rem 1.5rem;
+    padding: 2rem 1.5rem;
 
     form { 
         width: 90%;
         display: flex;
         flex-direction: column;
     }
-    form button { 
+    form button {
         height: 40px;
-        font-size: 1.2rem;
+        font-size:1.2rem;
+    }
+
+    h1 { 
+        color:var(--white);
+        padding-bottom: 1rem;
     }
 }
 
-.text { 
+.text {
     margin-top:1rem;
     color: var(--white);
     cursor: pointer;
     text-align: center;
 }
 
-
 @media( max-width:620px){
-    .login{
+    .signUp { 
         width: 90%;
-
-        
     }
-    .containerCenter {
+    .containerCenter{
         img { 
             width: 90%;
         }
