@@ -19,7 +19,7 @@ export default function Home() {
         <title>Sujeito Pizza - Faça seu Login</title>
       </Head>
       <div className={styles.containerCenter}>
-            <Image src={logo} alt="Logo Sujeito Pizza"/>
+        <Image src={logo} alt="Logo Sujeito Pizza"/>
         <div className={styles.login}>
           <form>    
               <Input 

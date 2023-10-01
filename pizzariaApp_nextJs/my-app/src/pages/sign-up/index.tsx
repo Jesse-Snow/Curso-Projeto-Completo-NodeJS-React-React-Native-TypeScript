@@ -37,7 +37,7 @@ export default function SignUp(){
                   />
 
                   <Input 
-                    type="text"
+                    type="password"
                     placeholder="Digite sua senha"
                   />
 
