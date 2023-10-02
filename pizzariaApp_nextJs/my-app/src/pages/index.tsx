@@ -14,14 +14,16 @@ import { AuthContext } from '../contexts/AuthContext';
 
 export default function Home() {
   const [loading,setLoading] = useState(false);
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
   const { signIn } = useContext(AuthContext);
 
   async function handleSubmit(event: FormEvent ){ 
     event.preventDefault();
 
     const data = {
-      email:"teste",
-      password:"123123"
+      email:email,
+      password:password
     };
 
     await signIn(data);
@@ -40,11 +42,15 @@ export default function Home() {
               <Input 
                 type="text"
                 placeholder="Digite seu e-mail"
+                value={email}
+                onChange={ (e) => setEmail(e.target.value) }
               />
 
               <Input 
                 type="password"
                 placeholder="Digite sua senha"
+                value={password}
+                onChange={ (e) => setPassword(e.target.value) }
               />
 
               <Button 
