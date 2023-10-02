@@ -8,10 +8,25 @@ import styles from '../styles/home.module.scss';
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button"
 import Link from 'next/link';
-import { useState } from "react";
+import { useState, useContext, FormEvent} from "react";
+
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function Home() {
   const [loading,setLoading] = useState(false);
+  const { signIn } = useContext(AuthContext);
+
+  async function handleSubmit(event: FormEvent ){ 
+    event.preventDefault();
+
+    const data = {
+      email:"teste",
+      password:"123123"
+    };
+
+    await signIn(data);
+
+  }
 
   return (
       <> {/* Fragment: Tag sem nome e sem estilização */}
@@ -21,7 +36,7 @@ export default function Home() {
       <div className={styles.containerCenter}>
         <Image src={logo} alt="Logo Sujeito Pizza"/>
         <div className={styles.login}>
-          <form>    
+          <form onSubmit={handleSubmit}>    
               <Input 
                 type="text"
                 placeholder="Digite seu e-mail"
