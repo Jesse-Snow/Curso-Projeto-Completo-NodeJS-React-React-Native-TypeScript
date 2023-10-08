@@ -1,6 +1,7 @@
 import { createContext,ReactNode,useState } from 'react';
-import { destroyCookie } from 'nookies';
+import { destroyCookie,setCookie } from 'nookies';
 import { useRouter } from 'next/router';
+import { api } from '../services/apiClient';
 
 type AuthContextData = {
     user: UserProps;
@@ -43,10 +44,36 @@ export function signOut(){
 export function AuthProvider({children}: AuthProviderProps){
     const [user,setUser] = useState<UserProps>();
     const isAuthenticated = !!user; // Caso a variável esteja vazia, será false
+    const router = useRouter();
 
     async function signIn({email,password} : SignInProps){
-        alert('Usuario:' + email);
-        alert('Senha' + password)
+        try {
+            const response = await api.post('/session', { email: email, password: password});
+    
+            const { id, user, token } = response.data;
+    
+            setCookie(undefined,'@nextauth.token',token,{
+                maxAge: 60 * 60 * 24 * 30, // Expirar em 1 mês 
+                path:"/" // Quais caminhos terão acesso ao cookie ( / são todos)
+            });
+
+            /* Pegar os dados do user através da resposta e passar esses dados para o hook(state) user, 
+               para que o Provider passe os dados do user para os outros componentes
+            */
+            setUser({
+                id:id,
+                user:user,
+                email: email
+            });
+
+            // Axios defaults, irá passar no cabeçalho das próximas requisições o token
+            api.defaults.headers['Authorizaion'] = `Bearer ${token}`;
+
+            // Redirecionar para o Dashboard
+            router.push('/dashboard');
+        }catch(err){
+            console.log('Erro ao Acessar... ',err);
+        }
     }
 
     return (
