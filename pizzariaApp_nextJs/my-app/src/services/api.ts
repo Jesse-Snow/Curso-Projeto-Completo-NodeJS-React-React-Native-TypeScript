@@ -1,16 +1,19 @@
 import axios, { AxiosError } from 'axios';
-import { parseCookies } from 'nookies';
+import { parseCookies,setCookie,destroyCookie } from 'nookies';
 
 import { AuthTokenError } from './errors/AuthTokenError';
 
-export function setupAPIClient(ctx = undefined){
-    // Cookies?
-    let cookies = parseCookies(ctx);
+import { signOut } from '../contexts/AuthContext';
 
-    // Instancia do Axios com configurações 
+export function setupAPIClient(ctx = undefined){
+    // Para client side, o ctx pode ser omitido, ou posto para undefined ou null
+    // Irá pegar os cookies do browser e por em um objeto
+    let cookies = parseCookies(ctx);
+    
     const api = axios.create({
         baseURL:'http://localhost:3333',
         headers:{
+            // Irá adicionar ao Authorization do header, o Bearer + o atributo do objeto cookies que se chama @nextauth.token
             Authorization: `Bearer ${cookies['@nextauth.token']}` // Notação Colchetes, acessa atributo do objeto com o [], é o mesmo que objeto.atributo
         }
     });
@@ -23,7 +26,8 @@ export function setupAPIClient(ctx = undefined){
         if(error.response.status === 401){
             // Se requisição for feita com o objeto window ( browser ) 
             if( typeof window !== undefined){
-                // Chama função que desloga usuario
+                // Chama função que desloga usuario ( Removendo dados do cookie[ que possui o token] e indo para rota inicial)
+                signOut();
             }
             // Caso a requisição não tenha sido feita por um browser
             else {
