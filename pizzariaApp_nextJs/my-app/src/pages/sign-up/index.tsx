@@ -1,7 +1,7 @@
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 
-import { useState,FormEvent } from 'react';
+import { useState,FormEvent,useContext } from 'react';
 import Link from 'next/link';
 
 import Head from "next/head"
@@ -12,7 +12,10 @@ import logo from '../../../public/logo.svg'
 
 import styles from '../../styles/signUp.module.scss'
 
+import { AuthContext } from '../../contexts/AuthContext';
+
 export default function SignUp(){
+    const { signUp } = useContext(AuthContext);
     const [loading,setLoading] = useState(false);
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
@@ -25,9 +28,17 @@ export default function SignUp(){
         alert('Preencha todos os campos');
         return;
       }
-      
+
       setLoading(true);
 
+      const data = {
+        name:name,
+        email:email,
+        password:password
+      }
+
+      await signUp(data);
+      setLoading(false);
 
     }
 

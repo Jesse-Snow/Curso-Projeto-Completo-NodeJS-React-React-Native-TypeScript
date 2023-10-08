@@ -8,6 +8,7 @@ type AuthContextData = {
     isAuthenticated: boolean;
     signIn: (credentials: SignInProps) => Promise<void>;
     signOut: () => void;
+    signUp: (credentials: SignUpProps) => Promise<void>; 
 }
 
 type UserProps = {
@@ -19,6 +20,12 @@ type UserProps = {
 type SignInProps = {
     email: string;
     password: string;
+}
+
+type SignUpProps = {
+    name: string,
+    email: string,
+    password:string
 }
 
 
@@ -72,12 +79,29 @@ export function AuthProvider({children}: AuthProviderProps){
             // Redirecionar para o Dashboard
             router.push('/dashboard');
         }catch(err){
-            console.log('Erro ao Acessar... ',err);
+            alert('Erro ao Acessar... ' + err.response.data.error)
         }
     }
 
+    async function signUp({name,email,password} : SignUpProps){
+        try { 
+            const response = await api.post('/users',{ 
+                name:name,
+                email:email,
+                password:password
+            })
+
+            alert('Usuario criado com Sucesso! Bem vindo(a) ' + response.data.name);
+        }catch(err){
+            console.log('Erro no cadastrado',err);
+        }
+
+
+        router.push('/');
+    }
+
     return (
-        <AuthContext.Provider value={{user,isAuthenticated,signIn,signOut}}>
+        <AuthContext.Provider value={{user,isAuthenticated,signIn,signOut,signUp}}>
             {children}
         </AuthContext.Provider>
     )
