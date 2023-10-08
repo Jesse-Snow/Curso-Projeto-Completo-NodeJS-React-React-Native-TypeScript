@@ -21,13 +21,20 @@ export default function Home() {
   async function handleSubmit(event: FormEvent ){ 
     event.preventDefault();
 
+    if( email === "" || password === ""){
+      alert("Preencha Email e Senha");
+      return;
+    }
+
+    setLoading(true);
+
     const data = {
       email:email,
       password:password
     };
 
     await signIn(data);
-
+    setLoading(false);
   }
 
   return (
@@ -55,7 +62,7 @@ export default function Home() {
 
               <Button 
                 type="submit"
-                disabled={loading}
+                loading={loading}
               >
                 Acessar
               </Button>

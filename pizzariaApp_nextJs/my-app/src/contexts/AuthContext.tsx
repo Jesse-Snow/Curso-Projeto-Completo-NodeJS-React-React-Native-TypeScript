@@ -54,7 +54,7 @@ export function AuthProvider({children}: AuthProviderProps){
     
             setCookie(undefined,'@nextauth.token',token,{
                 maxAge: 60 * 60 * 24 * 30, // Expirar em 1 mês 
-                path:"/" // Quais caminhos terão acesso ao cookie ( / são todos)
+                path:"/" // Quais rotas terão acesso ao cookie ( / são todos)
             });
 
             /* Pegar os dados do user através da resposta e passar esses dados para o hook(state) user, 
