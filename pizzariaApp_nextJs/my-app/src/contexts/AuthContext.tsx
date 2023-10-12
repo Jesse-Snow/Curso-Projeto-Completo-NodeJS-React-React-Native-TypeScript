@@ -2,6 +2,7 @@ import { createContext,ReactNode,useState } from 'react';
 import { destroyCookie,setCookie } from 'nookies';
 import { useRouter } from 'next/router';
 import { api } from '../services/apiClient';
+import { toast } from 'react-toastify';
 
 type AuthContextData = {
     user: UserProps;
@@ -33,7 +34,7 @@ type AuthProviderProps = {
     children: ReactNode;
 }
 
-import { setupAPIClient } from '../services/api';
+
 export const AuthContext = createContext({} as AuthContextData);
 
 // Desloga o usuário
@@ -44,8 +45,9 @@ export function signOut(){
         destroyCookie(undefined,'@nextauth.token');
         // Vai para rota inicial
         router.push('/');
-    }catch{
-        console.log('Erro ao deslogar');
+    }catch(e){
+        toast.error('Erro ao deslogar')
+        console.log('Erro ao deslogar..' + e);
     }
 }
 export function AuthProvider({children}: AuthProviderProps){
@@ -76,10 +78,13 @@ export function AuthProvider({children}: AuthProviderProps){
             // Axios defaults, irá passar no cabeçalho das próximas requisições o token
             api.defaults.headers['Authorizaion'] = `Bearer ${token}`;
 
+            toast.success('Logado com sucesso!');
+
             // Redirecionar para o Dashboard
             router.push('/dashboard');
         }catch(err){
-            alert('Erro ao Acessar... ' + err.response.data.error)
+            toast.error('Erro ao Acessar, ');
+            console.log('Erro ao acessar.. ' +  err.response.data.error);
         }
     }
 
@@ -91,9 +96,10 @@ export function AuthProvider({children}: AuthProviderProps){
                 password:password
             })
 
-            alert('Usuario criado com Sucesso! Bem vindo(a) ' + response.data.name);
+            toast.success('Usuario criado com Sucesso! Bem vindo(a) ' + response.data.name)
         }catch(err){
-            console.log('Erro no cadastrado',err);
+            toast.error('Erro no cadastro');
+            console.log('Erro no cadastro...' + err)
         }
 
 

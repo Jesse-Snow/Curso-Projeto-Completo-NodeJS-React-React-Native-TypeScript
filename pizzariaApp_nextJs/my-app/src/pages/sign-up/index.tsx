@@ -14,6 +14,8 @@ import styles from '../../styles/signUp.module.scss'
 
 import { AuthContext } from '../../contexts/AuthContext';
 
+import { toast } from 'react-toastify';
+
 export default function SignUp(){
     const { signUp } = useContext(AuthContext);
     const [loading,setLoading] = useState(false);
@@ -25,7 +27,7 @@ export default function SignUp(){
       event.preventDefault();
       
       if( name === "" || email === "" || password === ""){
-        alert('Preencha todos os campos');
+        toast.warning('Preencha todos os campos')
         return;
       }
 

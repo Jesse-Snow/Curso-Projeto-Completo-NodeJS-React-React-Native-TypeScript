@@ -12,6 +12,8 @@ import { useState, useContext, FormEvent} from "react";
 
 import { AuthContext } from '../contexts/AuthContext';
 
+import { toast } from 'react-toastify';
+
 export default function Home() {
   const [loading,setLoading] = useState(false);
   const [email,setEmail] = useState('');
@@ -22,7 +24,7 @@ export default function Home() {
     event.preventDefault();
 
     if( email === "" || password === ""){
-      alert("Preencha Email e Senha");
+      toast.warning("Preencha Email e Senha");
       return;
     }
 
