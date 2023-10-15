@@ -16,7 +16,7 @@ export function canSSRGuest<P>(fn : GetServerSideProps<P> /* O fn é função ge
             return { 
                 redirect:{
                     destination:'/dashboard',
-                    permanent:false
+                    permanent:false // Return a Temporary Redirect HTTP status (307)
                 }
             }
         }
