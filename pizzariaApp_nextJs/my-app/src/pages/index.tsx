@@ -14,6 +14,8 @@ import { AuthContext } from '../contexts/AuthContext';
 
 import { toast } from 'react-toastify';
 
+import { canSSRGuest } from '../utils/canSSRGuest'; 
+
 export default function Home() {
   const [loading,setLoading] = useState(false);
   const [email,setEmail] = useState('');
@@ -79,3 +81,19 @@ export default function Home() {
       </>
   )
 }
+
+/*
+Utilizando Server Side Props
+export const getServerSidePros = async( context ) => {
+  console.log('Using server side');
+
+  return {
+    props:{}
+  }
+}
+*/
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  return {
+    props:{}
+  }
+});
