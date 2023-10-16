@@ -1,8 +1,10 @@
-import { createContext,ReactNode,useState } from 'react';
-import { destroyCookie,setCookie } from 'nookies';
-import { useRouter } from 'next/router';
+import { createContext,ReactNode,useState,useEffect } from 'react';
+import { destroyCookie,setCookie,parseCookies } from 'nookies';
+import { useRouter,NextRouter } from 'next/router';
 import { api } from '../services/apiClient';
 import { toast } from 'react-toastify';
+
+import { AuthTokenError } from '../services/errors/AuthTokenError'
 
 type AuthContextData = {
     user: UserProps;
@@ -38,13 +40,20 @@ type AuthProviderProps = {
 export const AuthContext = createContext({} as AuthContextData);
 
 // Desloga o usuário
-export function signOut(){
-    const router = useRouter();
+export function signOut( Router : NextRouter = null){
+    
+    /* Validação para quando for usar função signOut em um componente jsx ( que então irá usar o hook useRouter da função),
+       ou se irá utilizar o signOut em uma função javascript ( api.ts ), que ai iria utilizar o hook da função signOut. 
+    */
+    if(Router === null ){ 
+        const Router = useRouter();
+    }
+
     try{
         // Remove os dados que foram armazenados no cookie, faznedo com que não passe dados do user na requisição
         destroyCookie(undefined,'@nextauth.token');
         // Vai para rota inicial
-        router.push('/');
+        Router.push('/');
     }catch(e){
         toast.error('Erro ao deslogar')
         console.log('Erro ao deslogar..' + e);
@@ -54,6 +63,28 @@ export function AuthProvider({children}: AuthProviderProps){
     const [user,setUser] = useState<UserProps>();
     const isAuthenticated = !!user; // Caso a variável esteja vazia, será false
     const router = useRouter();
+
+    useEffect(()=>{
+        
+        const { '@nextauth.token' : token } = parseCookies();  /* Verifica se no objeto existe alguma propriedade '@nextauth.token' e passa para variável token  */
+
+        if(token){
+            /* Se existir um token, fazer reqisição para /me e passar os dados da resopnse para o hook user. 
+               Se deu algum erro na requisição, deslogar User          
+            */
+            api.get('/me').then( response => {
+                const { id,name,email } = response.data;
+
+                setUser({
+                    id:id,
+                    user:name,
+                    email:email
+                })
+            }).catch(()=>{
+                signOut(router);
+            });
+        }
+    },[])
 
     async function signIn({email,password} : SignInProps){
         try {
