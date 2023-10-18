@@ -10,7 +10,7 @@ type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
     signIn: (credentials: SignInProps) => Promise<void>;
-    signOut: () => void;
+    signOut: ( Router? : NextRouter) => void;
     signUp: (credentials: SignUpProps) => Promise<void>; 
 }
 
