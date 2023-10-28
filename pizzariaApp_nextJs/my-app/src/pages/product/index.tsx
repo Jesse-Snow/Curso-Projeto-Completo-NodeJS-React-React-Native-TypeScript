@@ -6,11 +6,26 @@ import { FiUpload } from 'react-icons/fi';
 
 import { canSSRAuth } from '../../utils/canSSRAuth';
 
-import { useState,ChangeEvent } from 'react';
+import { useState,ChangeEvent,useEffect } from 'react';
+
+import { setupAPIClient } from '../../services/api';
+
+interface CategoryProps { 
+  id: string
+  name: string;
+}
+
+interface ProductProps {
+  category: CategoryProps[];
+}
 
 
-export default function Product(){
+export default function Product(props: ProductProps){
     const [avatarUrl,setAvatarUrl] = useState(null);
+    const [category] = useState(props.category || []);
+    const [categorySelected, setCategorySelected] = useState('');
+
+
 
     function handleChange(e: ChangeEvent<HTMLInputElement>){
 
@@ -27,6 +42,10 @@ export default function Product(){
       if(image.type === 'image/jpeg' || image.type === 'image/png' || image.type === 'image/jpg'){
         setAvatarUrl(URL.createObjectURL(image));
       }
+    }
+
+    function handleCategoryChange(e: ChangeEvent<HTMLSelectElement>){
+      setCategorySelected(e.target.value);
     }
 
 
@@ -61,9 +80,14 @@ export default function Product(){
                       
                     </label>
 
-                    <select>
-                        <option>Alguma Categoria</option>
-                        <option>Outra Categoria</option>
+                    <select value={categorySelected} onChange={handleCategoryChange}>
+                        {category && (
+                          category.map((categoryValue,index) => {
+                            return (
+                              <option key={categoryValue.id} value={index}>{categoryValue.name}</option>
+                            )
+                          })
+                        )}
                     </select>
 
                     <input
@@ -97,7 +121,11 @@ export default function Product(){
 }
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
+    const api = setupAPIClient(ctx);
+
+    const response = await api.get('/category');
+  
     return {
-        props:{}
+        props:{ category:response.data}
     }
 });
