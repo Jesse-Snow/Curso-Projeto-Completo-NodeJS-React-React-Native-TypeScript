@@ -6,9 +6,11 @@ import { FiUpload } from 'react-icons/fi';
 
 import { canSSRAuth } from '../../utils/canSSRAuth';
 
-import { useState,ChangeEvent,useEffect } from 'react';
+import { useState,ChangeEvent,FormEvent } from 'react';
 
 import { setupAPIClient } from '../../services/api';
+
+import { toast } from 'react-toastify';
 
 interface CategoryProps { 
   id: string
@@ -21,9 +23,13 @@ interface ProductProps {
 
 
 export default function Product(props: ProductProps){
-    const [avatarUrl,setAvatarUrl] = useState(null);
+    const [avatarUrl,setAvatarUrl] = useState('');
+    const [avatarImage,setAvatarImage] = useState(null);
     const [category] = useState(props.category || []);
     const [categorySelected, setCategorySelected] = useState('');
+    const [name,setName] = useState('');
+    const [price,setPrice] = useState('');
+    const [description,setDescription] = useState('');
 
 
 
@@ -40,6 +46,7 @@ export default function Product(props: ProductProps){
       }
 
       if(image.type === 'image/jpeg' || image.type === 'image/png' || image.type === 'image/jpg'){
+        setAvatarImage(image);
         setAvatarUrl(URL.createObjectURL(image));
       }
     }
@@ -48,6 +55,40 @@ export default function Product(props: ProductProps){
       setCategorySelected(e.target.value);
     }
 
+    async function handleSubmit(event: FormEvent){
+      event.preventDefault();
+      
+      try {
+        const data = new FormData();
+
+        if(name === '' || price === '' || description === '' || avatarImage === null || category.length <= 0){
+          toast.warning('Preencha os Campos');
+          return;
+        }
+        
+        data.append('name',name);
+        data.append('price',price);
+        data.append('description',description);
+        data.append('file',avatarImage);
+        data.append('category_id',category[categorySelected].id)
+
+        const api = setupAPIClient();
+        await api.post('/product',data);
+
+        toast.success('Produto Cadastrado com Sucesso!');
+      }
+      catch(err){
+        console.log(err);
+        toast.error('Erro ao cadastrar Produto');
+      }
+
+      setName('');
+      setPrice('');
+      setDescription('');
+      setAvatarImage(null);
+      setAvatarUrl('');
+
+    }
 
     return (
         <>
@@ -58,7 +99,7 @@ export default function Product(props: ProductProps){
             <Header />  
             <main className={styles.container}>
                 <h1>Novo Produto</h1>
-                <form className={styles.form}>
+                <form className={styles.form} onSubmit={handleSubmit}>
 
                     <label className={styles.labelAvatar}>
                       <span>
@@ -94,17 +135,23 @@ export default function Product(props: ProductProps){
                       placeholder='Digite o nome do Produto'
                       type='text'
                       className={styles.input}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
 
                     <input 
                       placeholder='Preço do Produto'
                       type='text'
                       className={styles.input}
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
                     />  
 
                     <textarea 
                       placeholder='Descreva o produto..'
                       className={styles.textarea}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
                     /> 
 
                     <button
