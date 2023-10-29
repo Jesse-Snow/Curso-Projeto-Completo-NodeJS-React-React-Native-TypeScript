@@ -6,7 +6,29 @@ import styles from './styles.module.scss';
 import { Header } from '../../components/Header';
 import { FiRefreshCcw } from 'react-icons/fi';
 
-export default function Dashboard(){
+import { setupAPIClient } from '../../services/api';
+
+import { useState } from 'react';
+
+interface OrdersProps { 
+  id:string;
+  table: number | string;
+  status: boolean;
+  draft: boolean;
+  name: string | null;
+}
+
+interface DashboardProps {
+  orders: OrdersProps[];
+}
+
+export default function Dashboard( props : DashboardProps ){
+    const [orders] = useState( props.orders || []);
+
+    function handleOpenModalView(id: string){
+      console.log('Pedido: ' + id)
+    }
+
     return (
         <>
           <Head>
@@ -24,20 +46,20 @@ export default function Dashboard(){
               </div>
 
               <article className={styles.listOrders}>
-                
-                <section className={styles.orderItem}>
-                  <button>
-                    <div className={styles.tag}></div>
-                    <span>Mesa 25</span>
-                  </button>
-                </section>
 
-                <section className={styles.orderItem}>
-                  <button>
-                    <div className={styles.tag}></div>
-                    <span>Mesa 29</span>
-                  </button>
-                </section>
+                {
+                  orders.map( value => { 
+                    return (
+                      <section key={value.id} className={styles.orderItem} >
+                        <button onClick={() => handleOpenModalView(value.id)}>
+                          <div className={styles.tag}></div>
+                          <span>Mesa {value.table}</span>
+                        </button>
+                      </section>
+
+                    )
+                  })
+                }
 
               </article>
             </main>
@@ -47,7 +69,11 @@ export default function Dashboard(){
 }
 
 export const getServerSideProps = canSSRAuth( async (ctx) => {
+    const api = setupAPIClient(ctx);
+
+    const response = await api.get('/orders');
+
     return { 
-        props:{}
+        props:{ orders: response.data }
     }
 });
