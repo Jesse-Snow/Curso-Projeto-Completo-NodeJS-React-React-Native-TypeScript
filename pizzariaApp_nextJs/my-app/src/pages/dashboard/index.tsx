@@ -10,6 +10,10 @@ import { setupAPIClient } from '../../services/api';
 
 import { useState } from 'react';
 
+import Modal from 'react-modal';
+
+import { ModalOrder } from '../../components/ModalOrder';
+
 interface OrdersProps { 
   id:string;
   table: number | string;
@@ -22,13 +26,55 @@ interface DashboardProps {
   orders: OrdersProps[];
 }
 
+export type OrderItemProps = {
+  id: string;
+  amount: number;
+  product_id: string;
+  order_id: string;
+  product: { 
+    id: string;
+    name: string;
+    price: string;
+    description: string;
+    banner: string;
+    category_id: string;
+  }
+  order: { 
+    id: string;
+    table: number | string;
+    status:boolean;
+    name: string | null;
+  }
+
+
+}
+
+
 export default function Dashboard( props : DashboardProps ){
     const [orders] = useState( props.orders || []);
+    const [modalItem,setModalItem] = useState<OrderItemProps[]>();
+    const [modalVisible,setModalVisible] = useState(false);
 
-    function handleOpenModalView(id: string){
-      console.log('Pedido: ' + id)
+    function handleModalClose(){
+      setModalVisible(false);
     }
 
+    async function handleOpenModalView(id: string){
+      const api = setupAPIClient();
+
+      const response = await api.get('/order/detail', {
+        params: { 
+          order_id: id
+        }
+      })
+
+      setModalItem(response.data);
+      setModalVisible(true);
+
+      
+    }
+
+    Modal.setAppElement('#__next');
     return (
         <>
           <Head>
@@ -64,6 +110,10 @@ export default function Dashboard( props : DashboardProps ){
               </article>
             </main>
           </div>
+
+          { modalVisible && 
+            <ModalOrder />
+          }
         </>
     );
 }
