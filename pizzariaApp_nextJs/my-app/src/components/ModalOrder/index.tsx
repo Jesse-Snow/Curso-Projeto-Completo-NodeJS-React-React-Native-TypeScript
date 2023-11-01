@@ -23,7 +23,9 @@ export function ModalOrder( props: ModalOrderProps ){
         right:'auto',
         padding:'30px',
         transform: 'translate(-50%,-50%)',
-        backgroundColor: '#1d1d2e'
+        backgroundColor: '#1d1d2e',
+        overflow:'hidden',
+        minHeight:'350px'
       }
     }
     console.log(props.order);
@@ -57,6 +59,10 @@ export function ModalOrder( props: ModalOrderProps ){
                 </section>
               )
             })}
+
+            <button className={styles.buttonOrder} onClick={() => {}}>
+              Concluir Pedido
+            </button>
 
           </div>
 
