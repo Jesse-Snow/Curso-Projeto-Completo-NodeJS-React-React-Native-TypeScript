@@ -112,7 +112,11 @@ export default function Dashboard( props : DashboardProps ){
           </div>
 
           { modalVisible && 
-            <ModalOrder />
+            <ModalOrder 
+              isOpen={modalVisible}
+              onRequestClose={handleModalClose}
+              order={modalItem}
+            />
           }
         </>
     );
