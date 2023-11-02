@@ -5,6 +5,7 @@ import styles from './styles.module.scss';
 
 import { Header } from '../../components/Header';
 import { FiRefreshCcw } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 import { setupAPIClient } from '../../services/api';
 
@@ -51,10 +52,34 @@ export type OrderItemProps = {
 
 
 export default function Dashboard( props : DashboardProps ){
-    const [orders] = useState( props.orders || []);
+    const [orders,setOrders] = useState( props.orders || []);
     const [modalItem,setModalItem] = useState<OrderItemProps[]>();
     const [modalVisible,setModalVisible] = useState(false);
 
+    async function handleRefreshOrders(){
+      const api = setupAPIClient();
+      const response = await api.get('/orders');
+      setOrders(response.data);
+    }
+
+    async function handleFinishButton(id: string){
+      const api = setupAPIClient();
+      
+      try {
+        await api.put('/order/finish',{order_id:id});
+        
+        toast.success('Pedido Finalizado com Sucesso!');
+
+        const response = await api.get('/orders');
+        setOrders(response.data);
+        setModalVisible(false);
+
+      }catch(err){
+        console.log(err);
+        toast.error('Erro ao Finalizar pedido');
+      }
+    }
+    
     function handleModalClose(){
       setModalVisible(false);
     }
@@ -86,12 +111,16 @@ export default function Dashboard( props : DashboardProps ){
 
               <div className={styles.containerHeader}>
                 <h1>Últimos Pedidos</h1>
-                <button>
+                <button onClick={ handleRefreshOrders}>
                   <FiRefreshCcw size={25} color='#3fffa3'/>
                 </button>
               </div>
 
               <article className={styles.listOrders}>
+
+                { orders.length === 0 && 
+                  <span className={styles.ordersNotFound}>Nenhum pedido aberto encontrado...</span>
+                }
 
                 {
                   orders.map( value => { 
@@ -116,6 +145,7 @@ export default function Dashboard( props : DashboardProps ){
               isOpen={modalVisible}
               onRequestClose={handleModalClose}
               order={modalItem}
+              handleFinishButton={handleFinishButton}
             />
           }
         </>

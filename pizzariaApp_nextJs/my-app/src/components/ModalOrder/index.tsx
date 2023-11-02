@@ -10,6 +10,7 @@ interface ModalOrderProps {
   isOpen: boolean;
   onRequestClose: () => void;
   order: OrderItemProps[];
+  handleFinishButton: (id: string) => void;
 }
 
 
@@ -28,7 +29,6 @@ export function ModalOrder( props: ModalOrderProps ){
         minHeight:'350px'
       }
     }
-    console.log(props.order);
 
     return (
         <Modal
@@ -47,9 +47,14 @@ export function ModalOrder( props: ModalOrderProps ){
           <div className={styles.container}>
 
             <h2>Detalhes do Pedido</h2>
-            <span className={styles.table}>
-              Mesa: <strong>{props.order[0].order.table}</strong>
-            </span>
+              { props.order[0] ? 
+                (<span className={styles.table}>
+                  Mesa: <strong>{ props.order[0].order.table}</strong>
+                </span>) :
+                (
+                  <span>Mesa sem Pedido <br/><br/></span>
+                ) 
+              }
 
             {props.order.map( value => {
               return ( 
@@ -60,9 +65,11 @@ export function ModalOrder( props: ModalOrderProps ){
               )
             })}
 
-            <button className={styles.buttonOrder} onClick={() => {}}>
-              Concluir Pedido
-            </button>
+            { props.order[0] && 
+              <button className={styles.buttonOrder} onClick={() => props.handleFinishButton(props.order[0].order_id)}>
+                Concluir Pedido
+              </button>
+            }
 
           </div>
 

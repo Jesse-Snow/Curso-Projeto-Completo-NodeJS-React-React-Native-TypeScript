@@ -2,6 +2,7 @@
     width: 620px;
     background-color: var(--dark-700);
     color:var(--white);
+    height: 100%;
 }
 
 .container h2 {
@@ -24,7 +25,9 @@
     border:0;
     padding:0.5rem 1.5rem;
     border-radius: 0.2rem;
-    color: var(--green-900)
+    color: var(--green-900);
+    position:fixed;
+    bottom: 25px;
 }
 
 .table { 
