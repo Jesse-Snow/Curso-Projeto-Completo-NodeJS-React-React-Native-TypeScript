@@ -1,26 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,Button, Alert } from 'react-native';
+import {Text, View, StatusBar  } from 'react-native';
+import SignIn from './src/pages/SignIn';
 
 export default function App() {
 
-  function handleButton(){
-    Alert.alert('Button pressed again...!');
-  }
-
   return (
-    <View style={styles.container}>
-      <Text>Pizzaria Mobile App</Text>
-      <Button onPress={handleButton} title='Button'/> 
-      <StatusBar style="auto" />
+    <View>
+      <StatusBar backgroundColor="#1d1d2e" barStyle='light-content' translucent={false}/>
+      <SignIn />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
