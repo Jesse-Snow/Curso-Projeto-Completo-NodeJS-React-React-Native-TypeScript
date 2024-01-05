@@ -1,10 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View,Button, Alert } from 'react-native';
 
 export default function App() {
+
+  function handleButton(){
+    Alert.alert('Button pressed again...!');
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>Pizzaria Mobile App</Text>
+      <Button onPress={handleButton} title='Button'/> 
       <StatusBar style="auto" />
     </View>
   );
