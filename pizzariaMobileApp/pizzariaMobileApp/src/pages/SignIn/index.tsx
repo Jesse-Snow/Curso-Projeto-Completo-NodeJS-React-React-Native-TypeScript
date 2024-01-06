@@ -29,7 +29,7 @@ export default function SignIn(){
                   placeholderTextColor='#F0F0F0'
                   secureTextEntry={true}
                   onChangeText={(text) => setPassword(text)}
-                  // também pode ser onChangeTex(setPassword)
+                  // também pode ser onChangeText(setPassword)
                   value={password}
                 />
 
