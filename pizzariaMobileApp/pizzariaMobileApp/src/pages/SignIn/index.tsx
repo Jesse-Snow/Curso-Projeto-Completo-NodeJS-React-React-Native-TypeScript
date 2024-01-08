@@ -5,13 +5,17 @@ import { useState,useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 
 export default function SignIn(){
-    const { user } = useContext(AuthContext);
+    const { signIn } = useContext(AuthContext);
     
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
 
-    function handleButton(){
-        Alert.alert('email:' + email + ', senha:' + password);
+    async function handleButton(){
+
+        if(email === '' || password === ''){
+            return;
+        }
+        await signIn({email: email, password: password});
     }
 
     return (
