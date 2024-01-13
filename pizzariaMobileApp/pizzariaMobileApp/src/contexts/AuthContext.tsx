@@ -1,4 +1,4 @@
-import {createContext,ReactNode,useState} from 'react';
+import {createContext,ReactNode,useState,useEffect} from 'react';
 
 import { api } from '../services/api';
 
@@ -8,6 +8,9 @@ type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
     signIn: ( credentials: SignInProps) => Promise<void>;
+    loading: boolean;
+    loadingAuth: boolean
+    signOut: () => Promise<void>;
 }
 
 type UserProps = {
@@ -29,6 +32,34 @@ type SignInProps = {
 export const AuthContext = createContext({} as AuthContextData);
 
 export default function AuthProvider({children} : AuthProviderProps){
+
+    useEffect(()=>{
+
+        async function getUser(){
+            const user = await AsyncStorage.getItem('@sujeitopizzaria');
+
+            const hasUser: UserProps= JSON.parse(user || '{}' );
+
+            // Verifica se objeto tem algum atributo
+            if(Object.keys(hasUser).length > 0){
+                // Passando token no Authorization nas outras requisições
+                api.defaults.headers.common['Authorization'] = `Bearer ${hasUser.token}`;
+
+                setUser({ 
+                    id: hasUser.id,
+                    name: hasUser.name,
+                    email: hasUser.email,
+                    token: hasUser.token
+                })
+            }
+
+            setLoading(false);
+        }
+
+        getUser();
+
+    },[])
+
     const [user,setUser] = useState<UserProps>({
         id:'',
         name:'',
@@ -37,6 +68,7 @@ export default function AuthProvider({children} : AuthProviderProps){
     });
 
     const [loadingAuth,setLoadingAuth] = useState(false); // ???
+    const [loading,setLoading] = useState(true);
 
     const isAuthenticated = !!user.name; // Converter em boolean
 
@@ -64,16 +96,29 @@ export default function AuthProvider({children} : AuthProviderProps){
             // Passando token no Authorization nas outras requisições
             api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-
         }catch(err){
             console.log('Erro ao autenticar: ',err);
-            setLoadingAuth(false);
         }
+        setLoadingAuth(false);
 
     }
 
+    async function signOut(){
+        setLoading(true);
+        await AsyncStorage.clear().then( () => {
+            setUser({
+                id:'',
+                name:'',
+                email:'',
+                token:''
+            })
+          }
+        )
+        setLoading(false);
+    }
+
     return (
-        <AuthContext.Provider value={{user,isAuthenticated,signIn}}>
+        <AuthContext.Provider value={{user,isAuthenticated,signIn,loading,loadingAuth,signOut}}>
             {children}
         </AuthContext.Provider>
     )
